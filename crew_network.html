@@ -1,0 +1,164 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+            <script src="lib/bindings/utils.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+        
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+          <h1></h1>
+        </center>
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 100%;
+                 height: 800px;
+                 background-color: #222222;
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
+
+             
+
+             
+
+             
+        </style>
+    </head>
+
+
+    <body>
+        <div class="card" style="width: 100%">
+            
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+        
+
+        <script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"color": "#ADD8E6", "font": {"color": "white"}, "id": "TDC", "label": "TDC", "shape": "dot", "size": 50.0, "title": "Members: Sey, Tone, Came, Raven, Maze, Spark, Miel, Gysmo, Bart, Sucre, Tsar, Obsen, Snek, Acist, Sobre, Amer, Lodsie, Lazer, Neck, Ektar, Trone, Kate, Orne, Doter, Choco, Run"}, {"color": "#ADD8E6", "font": {"color": "white"}, "id": "DDA", "label": "DDA", "shape": "dot", "size": 18.333333333333336, "title": "Members: Aspik, Basik, Kosh, Alien, Warner, Shoker, Inox"}, {"color": "#ADD8E6", "font": {"color": "white"}, "id": "IBM", "label": "IBM", "shape": "dot", "size": 18.333333333333336, "title": "Members: Sobre, Amer, Oame, Moske, Zoeto, Acne, Bart"}, {"color": "#ADD8E6", "font": {"color": "white"}, "id": "335", "label": "335", "shape": "dot", "size": 13.333333333333332, "title": "Members: Lodsie, Lazer, Sateer, Das"}, {"color": "#ADD8E6", "font": {"color": "white"}, "id": "TME", "label": "TME", "shape": "dot", "size": 10.0, "title": "Members: Lazer, Lodsie"}, {"color": "#ADD8E6", "font": {"color": "white"}, "id": "567", "label": "567", "shape": "dot", "size": 11.666666666666666, "title": "Members: Gysmo, Sobre, Bart"}, {"color": "#ADD8E6", "font": {"color": "white"}, "id": "CSP", "label": "CSP", "shape": "dot", "size": 16.666666666666664, "title": "Members: Gysmo, Bart, Sobre, Lazer, Lodsie, Ektar"}, {"color": "#ADD8E6", "font": {"color": "white"}, "id": "5GB", "label": "5GB", "shape": "dot", "size": 15.0, "title": "Members: Spyr, Dock, Kinger, Den, Saber"}, {"color": "#ADD8E6", "font": {"color": "white"}, "id": "UBA", "label": "UBA", "shape": "dot", "size": 13.333333333333332, "title": "Members: Amon, Zaz, Hose, Omer"}, {"color": "#ADD8E6", "font": {"color": "white"}, "id": "TKO", "label": "TKO", "shape": "dot", "size": 11.666666666666666, "title": "Members: Arome, Ashet, Abyme"}, {"color": "#ADD8E6", "font": {"color": "white"}, "id": "RGI", "label": "RGI", "shape": "dot", "size": 13.333333333333332, "title": "Members: Lesiles, Clyde, Lesiles, Lionel"}, {"color": "#ADD8E6", "font": {"color": "white"}, "id": "BP", "label": "BP", "shape": "dot", "size": 16.666666666666664, "title": "Members: Kez, Resk, Blackos, Mister Z, Gildas, Raven"}, {"color": "#90EE90", "font": {"color": "white"}, "id": "KHR", "label": "KHR", "shape": "dot", "size": 21.666666666666668, "title": "Members: Oame, Shok, Dore, Hose, Pee, iacer, Koa, Real, Lesiles"}, {"color": "#90EE90", "font": {"color": "white"}, "id": "TF1", "label": "TF1", "shape": "dot", "size": 31.666666666666664, "title": "Members: Tenor, Acte, Hose, Lodsie, Jerb, Con, Grea, Orne, Pir, Brick, Opter, Kasm, Omer, Kapone, Soaf"}, {"color": "#90EE90", "font": {"color": "white"}, "id": "EPE", "label": "EPE", "shape": "dot", "size": 15.0, "title": "Members: Karem, Kaya, Maler, Pneh, Hank"}, {"color": "#90EE90", "font": {"color": "white"}, "id": "CV", "label": "CV", "shape": "dot", "size": 28.333333333333332, "title": "Members: Soer, Peg, Cha, Viol, Pire, Snek, Deze, Mew, Acne, Scaner, Lynio, Tibe, Loke"}, {"color": "#90EE90", "font": {"color": "white"}, "id": "VO", "label": "VO", "shape": "dot", "size": 16.666666666666664, "title": "Members: Scaner, Achet, Rekm, Miet, Sucet, Ovni"}, {"color": "#90EE90", "font": {"color": "white"}, "id": "SPS", "label": "SPS", "shape": "dot", "size": 13.333333333333332, "title": "Members: Dally, Edge, Gobe, Negre"}, {"color": "#90EE90", "font": {"color": "white"}, "id": "DSH", "label": "DSH", "shape": "dot", "size": 11.666666666666666, "title": "Members: Run, Maze, Dar2"}, {"color": "#90EE90", "font": {"color": "white"}, "id": "BAP", "label": "BAP", "shape": "dot", "size": 11.666666666666666, "title": "Members: Acme, Sime, Posk"}, {"color": "#90EE90", "font": {"color": "white"}, "id": "MMC", "label": "MMC", "shape": "dot", "size": 15.0, "title": "Members: Scaner, Achet, Rekm, Miet, Sucet"}, {"color": "#90EE90", "font": {"color": "white"}, "id": "K2R", "label": "K2R", "shape": "dot", "size": 13.333333333333332, "title": "Members: Cruel, Pegre, Sonor, Skore"}, {"color": "#90EE90", "font": {"color": "white"}, "id": "PBC", "label": "PBC", "shape": "dot", "size": 10.0, "title": "Members: Lodsie, Jerb"}, {"color": "#90EE90", "font": {"color": "white"}, "id": "DKP", "label": "DKP", "shape": "dot", "size": 16.666666666666664, "title": "Members: Zebulon, Rocket, Time, Rido, Ire2, Kero"}, {"color": "#90EE90", "font": {"color": "white"}, "id": "HMS", "label": "HMS", "shape": "dot", "size": 45.0, "title": "Members: Lesiles, Pir, Scur, Mozar, Falcon, Tekel, Rido, Suze, Tele, Geem, Saek, Koner, Rocket, Meab, Argo, Nubuk, Oame, Noich, Zebre, Consom, Kles, Aphex, Rags"}, {"color": "#90EE90", "font": {"color": "white"}, "id": "MX", "label": "MX", "shape": "dot", "size": 45.0, "title": "Members: Tenor, Acte, Pir, Grea, Orne, Hose, Jerb, Zaz, Con, Argo, Grade, Oame, Sobre, Tele, Suze, Snek, Cha, Erot, Ba, Ketie, Ros, Sous, Ch57"}, {"color": "#90EE90", "font": {"color": "white"}, "id": "PME", "label": "PME", "shape": "dot", "size": 18.333333333333336, "title": "Members: Sobre, Amer, Oame, Pum, Bart, Acne, Zoeto"}, {"color": "#90EE90", "font": {"color": "white"}, "id": "NO", "label": "NO", "shape": "dot", "size": 20.0, "title": "Members: Oame, Suze, Ros, Sous, Argo, Amer, Grea, Ba"}, {"color": "#90EE90", "font": {"color": "white"}, "id": "HEV", "label": "HEV", "shape": "dot", "size": 18.333333333333336, "title": "Members: User, Polka, Hirm, Moane, Nil, Pedro, Rodd"}, {"color": "#90EE90", "font": {"color": "white"}, "id": "GMC", "label": "GMC", "shape": "dot", "size": 18.333333333333336, "title": "Members: Pir, Bilto, Mozar, Side, Miss Zion, Meab, Sly"}, {"color": "#90EE90", "font": {"color": "white"}, "id": "NBA", "label": "NBA", "shape": "dot", "size": 15.0, "title": "Members: Pegre, Jone, Sonor, dark, Skore"}, {"color": "#90EE90", "font": {"color": "white"}, "id": "BW", "label": "BW", "shape": "dot", "size": 10.0, "title": "Members: Moske, Pegre"}, {"color": "#F08080", "font": {"color": "white"}, "id": "BK", "label": "BK", "shape": "dot", "size": 25.0, "title": "Members: Jone, Boogr, Crewer, Dime, Krab, Jeemee, Chea, Pornox, Mesy, Pool, Eryck"}, {"color": "#F08080", "font": {"color": "white"}, "id": "SWA", "label": "SWA", "shape": "dot", "size": 10.0, "title": "Members: Sucre, Lesiles"}, {"color": "#F08080", "font": {"color": "white"}, "id": "FTS", "label": "FTS", "shape": "dot", "size": 23.333333333333332, "title": "Members: Noak, Nubuk, Ufo, Mort, Lens, Negre, Sociz, P4, Guedin, Half"}, {"color": "#F08080", "font": {"color": "white"}, "id": "O2G", "label": "O2G", "shape": "dot", "size": 13.333333333333332, "title": "Members: Calis, Punet, Kist, Astek"}, {"color": "#F08080", "font": {"color": "white"}, "id": "1P", "label": "1P", "shape": "dot", "size": 16.666666666666664, "title": "Members: Most, Ros, Sous, Matsa, PO, Kume"}, {"color": "#F08080", "font": {"color": "white"}, "id": "TT", "label": "TT", "shape": "dot", "size": 26.666666666666668, "title": "Members: Bonom, Grade, Grems, Kolt, Polka, Rekm, Scaner, Pneh, Zebre, Tele, Suze, Moer"}, {"color": "#F08080", "font": {"color": "white"}, "id": "AQZ", "label": "AQZ", "shape": "dot", "size": 21.666666666666668, "title": "Members: Argo, Grade, Tele, Koa, Grems, Bonom, Scaner, Zebre, Tekel"}, {"color": "#ADD8E6", "font": {"color": "white"}, "id": "357 Kartel", "label": "357 Kartel", "shape": "dot", "size": 13.333333333333332, "title": "Members: Arlem, Warner, Toner, Con"}, {"color": "#F08080", "font": {"color": "white"}, "id": "2BR", "label": "2BR", "shape": "dot", "size": 16.666666666666664, "title": "Members: Gare, Sack, Rire, Ocean, Klone, Skir"}]);
+                  edges = new vis.DataSet([{"color": "lightgrey", "from": "TDC", "title": "Shared members: Sobre, Bart, Amer", "to": "IBM", "value": 3}, {"color": "lightgrey", "from": "TDC", "title": "Shared members: Lazer, Lodsie", "to": "335", "value": 2}, {"color": "lightgrey", "from": "TDC", "title": "Shared members: Lazer, Lodsie", "to": "TME", "value": 2}, {"color": "lightgrey", "from": "TDC", "title": "Shared members: Sobre, Bart, Gysmo", "to": "567", "value": 3}, {"color": "lightgrey", "from": "TDC", "title": "Shared members: Bart, Gysmo, Lazer, Ektar, Sobre, Lodsie", "to": "CSP", "value": 6}, {"color": "lightgrey", "from": "TDC", "title": "Shared members: Raven", "to": "BP", "value": 1}, {"color": "lightgrey", "from": "TDC", "title": "Shared members: Orne, Lodsie", "to": "TF1", "value": 2}, {"color": "lightgrey", "from": "TDC", "title": "Shared members: Snek", "to": "CV", "value": 1}, {"color": "lightgrey", "from": "TDC", "title": "Shared members: Run, Maze", "to": "DSH", "value": 2}, {"color": "lightgrey", "from": "TDC", "title": "Shared members: Lodsie", "to": "PBC", "value": 1}, {"color": "lightgrey", "from": "TDC", "title": "Shared members: Orne, Sobre, Snek", "to": "MX", "value": 3}, {"color": "lightgrey", "from": "TDC", "title": "Shared members: Sobre, Bart, Amer", "to": "PME", "value": 3}, {"color": "lightgrey", "from": "TDC", "title": "Shared members: Amer", "to": "NO", "value": 1}, {"color": "lightgrey", "from": "TDC", "title": "Shared members: Sucre", "to": "SWA", "value": 1}, {"color": "lightgrey", "from": "DDA", "title": "Shared members: Warner", "to": "357 Kartel", "value": 1}, {"color": "lightgrey", "from": "IBM", "title": "Shared members: Sobre, Bart", "to": "567", "value": 2}, {"color": "lightgrey", "from": "IBM", "title": "Shared members: Sobre, Bart", "to": "CSP", "value": 2}, {"color": "lightgrey", "from": "IBM", "title": "Shared members: Oame", "to": "KHR", "value": 1}, {"color": "lightgrey", "from": "IBM", "title": "Shared members: Acne", "to": "CV", "value": 1}, {"color": "lightgrey", "from": "IBM", "title": "Shared members: Oame", "to": "HMS", "value": 1}, {"color": "lightgrey", "from": "IBM", "title": "Shared members: Sobre, Oame", "to": "MX", "value": 2}, {"color": "lightgrey", "from": "IBM", "title": "Shared members: Amer, Bart, Acne, Zoeto, Oame, Sobre", "to": "PME", "value": 6}, {"color": "lightgrey", "from": "IBM", "title": "Shared members: Oame, Amer", "to": "NO", "value": 2}, {"color": "lightgrey", "from": "IBM", "title": "Shared members: Moske", "to": "BW", "value": 1}, {"color": "lightgrey", "from": "335", "title": "Shared members: Lazer, Lodsie", "to": "TME", "value": 2}, {"color": "lightgrey", "from": "335", "title": "Shared members: Lazer, Lodsie", "to": "CSP", "value": 2}, {"color": "lightgrey", "from": "335", "title": "Shared members: Lodsie", "to": "TF1", "value": 1}, {"color": "lightgrey", "from": "335", "title": "Shared members: Lodsie", "to": "PBC", "value": 1}, {"color": "lightgrey", "from": "TME", "title": "Shared members: Lazer, Lodsie", "to": "CSP", "value": 2}, {"color": "lightgrey", "from": "TME", "title": "Shared members: Lodsie", "to": "TF1", "value": 1}, {"color": "lightgrey", "from": "TME", "title": "Shared members: Lodsie", "to": "PBC", "value": 1}, {"color": "lightgrey", "from": "567", "title": "Shared members: Sobre, Bart, Gysmo", "to": "CSP", "value": 3}, {"color": "lightgrey", "from": "567", "title": "Shared members: Sobre", "to": "MX", "value": 1}, {"color": "lightgrey", "from": "567", "title": "Shared members: Sobre, Bart", "to": "PME", "value": 2}, {"color": "lightgrey", "from": "CSP", "title": "Shared members: Lodsie", "to": "TF1", "value": 1}, {"color": "lightgrey", "from": "CSP", "title": "Shared members: Lodsie", "to": "PBC", "value": 1}, {"color": "lightgrey", "from": "CSP", "title": "Shared members: Sobre", "to": "MX", "value": 1}, {"color": "lightgrey", "from": "CSP", "title": "Shared members: Sobre, Bart", "to": "PME", "value": 2}, {"color": "lightgrey", "from": "UBA", "title": "Shared members: Hose", "to": "KHR", "value": 1}, {"color": "lightgrey", "from": "UBA", "title": "Shared members: Hose, Omer", "to": "TF1", "value": 2}, {"color": "lightgrey", "from": "UBA", "title": "Shared members: Zaz, Hose", "to": "MX", "value": 2}, {"color": "lightgrey", "from": "RGI", "title": "Shared members: Lesiles", "to": "KHR", "value": 1}, {"color": "lightgrey", "from": "RGI", "title": "Shared members: Lesiles", "to": "HMS", "value": 1}, {"color": "lightgrey", "from": "RGI", "title": "Shared members: Lesiles", "to": "SWA", "value": 1}, {"color": "lightgrey", "from": "KHR", "title": "Shared members: Hose", "to": "TF1", "value": 1}, {"color": "lightgrey", "from": "KHR", "title": "Shared members: Lesiles, Oame", "to": "HMS", "value": 2}, {"color": "lightgrey", "from": "KHR", "title": "Shared members: Hose, Oame", "to": "MX", "value": 2}, {"color": "lightgrey", "from": "KHR", "title": "Shared members: Oame", "to": "PME", "value": 1}, {"color": "lightgrey", "from": "KHR", "title": "Shared members: Oame", "to": "NO", "value": 1}, {"color": "lightgrey", "from": "KHR", "title": "Shared members: Lesiles", "to": "SWA", "value": 1}, {"color": "lightgrey", "from": "KHR", "title": "Shared members: Koa", "to": "AQZ", "value": 1}, {"color": "lightgrey", "from": "TF1", "title": "Shared members: Jerb, Lodsie", "to": "PBC", "value": 2}, {"color": "lightgrey", "from": "TF1", "title": "Shared members: Pir", "to": "HMS", "value": 1}, {"color": "lightgrey", "from": "TF1", "title": "Shared members: Orne, Grea, Pir, Acte, Con, Hose, Tenor, Jerb", "to": "MX", "value": 8}, {"color": "lightgrey", "from": "TF1", "title": "Shared members: Grea", "to": "NO", "value": 1}, {"color": "lightgrey", "from": "TF1", "title": "Shared members: Pir", "to": "GMC", "value": 1}, {"color": "lightgrey", "from": "TF1", "title": "Shared members: Con", "to": "357 Kartel", "value": 1}, {"color": "lightgrey", "from": "EPE", "title": "Shared members: Pneh", "to": "TT", "value": 1}, {"color": "lightgrey", "from": "CV", "title": "Shared members: Scaner", "to": "VO", "value": 1}, {"color": "lightgrey", "from": "CV", "title": "Shared members: Scaner", "to": "MMC", "value": 1}, {"color": "lightgrey", "from": "CV", "title": "Shared members: Snek, Cha", "to": "MX", "value": 2}, {"color": "lightgrey", "from": "CV", "title": "Shared members: Acne", "to": "PME", "value": 1}, {"color": "lightgrey", "from": "CV", "title": "Shared members: Scaner", "to": "TT", "value": 1}, {"color": "lightgrey", "from": "CV", "title": "Shared members: Scaner", "to": "AQZ", "value": 1}, {"color": "lightgrey", "from": "VO", "title": "Shared members: Rekm, Miet, Scaner, Sucet, Achet", "to": "MMC", "value": 5}, {"color": "lightgrey", "from": "VO", "title": "Shared members: Scaner, Rekm", "to": "TT", "value": 2}, {"color": "lightgrey", "from": "VO", "title": "Shared members: Scaner", "to": "AQZ", "value": 1}, {"color": "lightgrey", "from": "SPS", "title": "Shared members: Negre", "to": "FTS", "value": 1}, {"color": "lightgrey", "from": "MMC", "title": "Shared members: Scaner, Rekm", "to": "TT", "value": 2}, {"color": "lightgrey", "from": "MMC", "title": "Shared members: Scaner", "to": "AQZ", "value": 1}, {"color": "lightgrey", "from": "K2R", "title": "Shared members: Sonor, Pegre, Skore", "to": "NBA", "value": 3}, {"color": "lightgrey", "from": "K2R", "title": "Shared members: Pegre", "to": "BW", "value": 1}, {"color": "lightgrey", "from": "PBC", "title": "Shared members: Jerb", "to": "MX", "value": 1}, {"color": "lightgrey", "from": "DKP", "title": "Shared members: Rido, Rocket", "to": "HMS", "value": 2}, {"color": "lightgrey", "from": "HMS", "title": "Shared members: Tele, Suze, Argo, Pir, Oame", "to": "MX", "value": 5}, {"color": "lightgrey", "from": "HMS", "title": "Shared members: Oame", "to": "PME", "value": 1}, {"color": "lightgrey", "from": "HMS", "title": "Shared members: Oame, Argo, Suze", "to": "NO", "value": 3}, {"color": "lightgrey", "from": "HMS", "title": "Shared members: Meab, Pir, Mozar", "to": "GMC", "value": 3}, {"color": "lightgrey", "from": "HMS", "title": "Shared members: Lesiles", "to": "SWA", "value": 1}, {"color": "lightgrey", "from": "HMS", "title": "Shared members: Nubuk", "to": "FTS", "value": 1}, {"color": "lightgrey", "from": "HMS", "title": "Shared members: Tele, Suze, Zebre", "to": "TT", "value": 3}, {"color": "lightgrey", "from": "HMS", "title": "Shared members: Tele, Tekel, Argo, Zebre", "to": "AQZ", "value": 4}, {"color": "lightgrey", "from": "MX", "title": "Shared members: Sobre, Oame", "to": "PME", "value": 2}, {"color": "lightgrey", "from": "MX", "title": "Shared members: Argo, Suze, Grea, Ba, Oame, Sous, Ros", "to": "NO", "value": 7}, {"color": "lightgrey", "from": "MX", "title": "Shared members: Pir", "to": "GMC", "value": 1}, {"color": "lightgrey", "from": "MX", "title": "Shared members: Sous, Ros", "to": "1P", "value": 2}, {"color": "lightgrey", "from": "MX", "title": "Shared members: Tele, Grade, Suze", "to": "TT", "value": 3}, {"color": "lightgrey", "from": "MX", "title": "Shared members: Tele, Grade, Argo", "to": "AQZ", "value": 3}, {"color": "lightgrey", "from": "MX", "title": "Shared members: Con", "to": "357 Kartel", "value": 1}, {"color": "lightgrey", "from": "PME", "title": "Shared members: Oame, Amer", "to": "NO", "value": 2}, {"color": "lightgrey", "from": "NO", "title": "Shared members: Sous, Ros", "to": "1P", "value": 2}, {"color": "lightgrey", "from": "NO", "title": "Shared members: Suze", "to": "TT", "value": 1}, {"color": "lightgrey", "from": "NO", "title": "Shared members: Argo", "to": "AQZ", "value": 1}, {"color": "lightgrey", "from": "HEV", "title": "Shared members: Polka", "to": "TT", "value": 1}, {"color": "lightgrey", "from": "NBA", "title": "Shared members: Pegre", "to": "BW", "value": 1}, {"color": "lightgrey", "from": "NBA", "title": "Shared members: Jone", "to": "BK", "value": 1}, {"color": "lightgrey", "from": "TT", "title": "Shared members: Tele, Scaner, Grade, Bonom, Zebre, Grems", "to": "AQZ", "value": 6}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {
+    "configure": {
+        "enabled": false
+    },
+    "edges": {
+        "color": {
+            "inherit": true
+        },
+        "smooth": {
+            "enabled": true,
+            "type": "dynamic"
+        }
+    },
+    "interaction": {
+        "dragNodes": true,
+        "hideEdgesOnDrag": false,
+        "hideNodesOnDrag": false
+    },
+    "physics": {
+        "enabled": true,
+        "forceAtlas2Based": {
+            "avoidOverlap": 0,
+            "centralGravity": 0.005,
+            "damping": 0.2,
+            "gravitationalConstant": -10,
+            "springConstant": 0.05,
+            "springLength": 200
+        },
+        "solver": "forceAtlas2Based",
+        "stabilization": {
+            "enabled": true,
+            "fit": true,
+            "iterations": 1000,
+            "onlyDynamicEdges": false,
+            "updateInterval": 50
+        }
+    }
+};
+
+                  
+
+
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+
+                  
+
+
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    </body>
+</html>
